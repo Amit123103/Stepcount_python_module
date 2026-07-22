@@ -1,0 +1,44 @@
+{
+  "person": {
+    "name": "Amit",
+    "gender": "male",
+    "step_length_m": 0.78
+  },
+  "segments": [
+    {
+      "origin": "Delhi",
+      "destination": "Agra",
+      "distance_m": 233000.0,
+      "steps_exact": 298717.9487,
+      "steps_rounded": 298718,
+      "percentage": 26.94,
+      "cumulative_distance_m": 233000.0,
+      "cumulative_steps": 298718
+    },
+    {
+      "origin": "Agra",
+      "destination": "Jaipur",
+      "distance_m": 238000.0,
+      "steps_exact": 305128.2051,
+      "steps_rounded": 305129,
+      "percentage": 27.51,
+      "cumulative_distance_m": 471000.0,
+      "cumulative_steps": 603847
+    },
+    {
+      "origin": "Jaipur",
+      "destination": "Udaipur",
+      "distance_m": 394000.0,
+      "steps_exact": 505128.2051,
+      "steps_rounded": 505129,
+      "percentage": 45.55,
+      "cumulative_distance_m": 865000.0,
+      "cumulative_steps": 1108976
+    }
+  ],
+  "totals": {
+    "total_distance_m": 865000.0,
+    "total_distance_km": 865.0,
+    "total_steps": 1108976
+  }
+}

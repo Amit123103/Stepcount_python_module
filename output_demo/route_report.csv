@@ -1,0 +1,5 @@
+Origin,Destination,Distance_m,Distance_km,Steps_Exact,Steps_Rounded,Percentage,Cumulative_Distance_m,Cumulative_Steps
+Delhi,Agra,233000.0,233.0,298717.9487,298718,26.94,233000.0,298718
+Agra,Jaipur,238000.0,238.0,305128.2051,305129,27.51,471000.0,603847
+Jaipur,Udaipur,394000.0,394.0,505128.2051,505129,45.55,865000.0,1108976
+TOTAL,,865000.0,865.0,,1108976,100.00,865000.0,1108976
