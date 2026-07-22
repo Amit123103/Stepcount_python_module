@@ -4,45 +4,86 @@
 [![Python Versions](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)](https://pypi.org/project/StepDistanceCalculator/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-StepDistanceCalculator is a Python package designed to calculate walking step counts between locations, places, or cities based on total distance, unit conversion, activity pace modes, and biomechanically accurate step length estimation.
+StepDistanceCalculator is a professional, object-oriented Python package designed to calculate walking step counts between locations, places, or cities based on total distance, unit conversion, activity pace modes, and biomechanically accurate step length estimation.
 
 ---
 
 ## Overview
 
-StepDistanceCalculator provides a high-level Python API and Command-Line Interface (CLI) to convert physical distances into step counts. It supports biometric calculations based on height and gender, custom stride/step lengths, activity pace modifiers, multi-segment routes, tabular reports (Text, JSON, CSV, PDF), and Matplotlib visualizations.
+StepDistanceCalculator provides a high-level Python API and Command-Line Interface (CLI) to convert physical distances into precise step counts. It supports biometric calculations based on height and gender, custom stride/step lengths, activity pace modifiers, multi-segment routes, tabular reports (Text, JSON, CSV, PDF), and Matplotlib visualizations.
 
 ---
 
-## Key Features
+## Features
 
-- Single and Multi-Segment Route Calculations: Compute exact and rounded step counts for single journeys or complex multi-city itineraries.
-- Biomechanical Step Length Estimation:
-  - Height-Based Estimation: Automatically calculates step length using validated height-to-step ratios (`Step Length = Height × Gender Factor`).
-  - Gender Defaults: Pre-configured averages for males (0.78 m), females (0.70 m), and neutral fallbacks (0.74 m).
+- Single and Multi-City Calculations: Compute exact and rounded step counts for single routes or multi-segment route chains.
+- Default and Custom Step Lengths:
+  - Gender Defaults: Pre-configured averages for Adult Males (0.78 m), Adult Females (0.70 m), and Neutral fallbacks (0.74 m).
+  - Biomechanical Height Estimation: Calculates step length using validated height-to-step ratios (`Step Length = Height × Gender Factor`).
   - Stride Support: Convert full 2-step stride lengths into single step metrics.
   - Activity Pace Modifiers: Multipliers for Walking (1.00x), Brisk Walking (1.08x), Jogging (1.25x), Running (1.40x), and Hilly/Uphill terrain (0.90x).
-- Flexible Unit Support: Converts distance from kilometers (`km`), miles (`miles`), feet (`ft`), meters (`m`), centimeters (`cm`), and inches (`in`).
-- Configurable Rounding Modes: Supports `ceil` (default), `floor`, `round`, and `exact` step calculations.
-- Comprehensive Reporting: Export structured calculations into Plain Text, JSON, CSV, and PDF formats.
-- Data Visualizations: Built-in Matplotlib chart utilities generating segment step bar charts, distance pie charts, and cumulative progress line charts.
-- Interactive CLI: Built-in terminal user interface and subcommand arguments.
+- Automatic Unit Conversion: Seamlessly converts distances in meters (`m`), kilometers (`km`), miles (`miles`), feet (`ft`), centimeters (`cm`), and inches (`in`).
+- Clean Object-Oriented Design: Built around core domain abstractions including `Person`, `Location`, `Segment`, `Route`, `DistanceCalculator`, and `ReportGenerator`.
+- Comprehensive Reports: Export calculation summaries as Plain Text, JSON, CSV, or formatted PDF documents.
+- Data Visualizations: Generate Matplotlib charts for segment steps (bar chart), percentage distance contribution (pie chart), and cumulative steps across checkpoints (line chart).
+- CLI and Interactive Mode: Built-in Command Line Interface with an interactive terminal menu program.
+- Robust and Validated: Complete input validation, custom exception hierarchy, and structured logging.
 
 ---
 
-## Installation
+## Project Structure
 
-### Installation via PyPI
+```text
+StepDistanceCalculator/
+│
+├── stepdistance/            # Core package
+│   ├── __init__.py          # Package exports & versioning
+│   ├── person.py            # Person class (name, gender, step length, pace)
+│   ├── location.py          # Location data class
+│   ├── route.py             # Route and Segment classes
+│   ├── calculator.py        # DistanceCalculator & result dataclasses
+│   ├── converter.py         # Unit conversion module
+│   ├── reports.py           # ReportGenerator (Text, JSON, CSV, PDF)
+│   ├── visualization.py     # Matplotlib charts (Bar, Pie, Line)
+│   ├── utils.py             # Validators, logging & custom exceptions
+│   └── cli.py               # CLI & Interactive Menu Program
+│
+├── examples/                # Example scripts
+│   ├── basic_usage.py       # Single distance calculation
+│   ├── multi_city.py        # Multi-city route calculation
+│   └── generate_reports.py  # Exporting JSON/CSV/PDF & Charts
+│
+├── tests/                   # Pytest test suite
+│   ├── test_calculator.py
+│   ├── test_cli.py
+│   ├── test_converter.py
+│   ├── test_location.py
+│   ├── test_person.py
+│   ├── test_reports.py
+│   ├── test_route.py
+│   └── test_utils.py
+│
+├── docs/
+│   └── usage_guide.md
+├── pyproject.toml           # Build configuration
+├── setup.py                 # Setup script
+├── requirements.txt         # Package dependencies
+└── README.md
+```
 
-To install the latest release from PyPI:
+---
+
+## Quick Start & Installation
+
+### Option 1: Install from PyPI (Recommended)
 
 ```bash
 pip install StepDistanceCalculator
 ```
 
-### Installation from Source
+### Option 2: Install from Source / Local Development
 
-To install the package locally for development:
+Clone the repository and install in editable mode:
 
 ```bash
 git clone https://github.com/Amit123103/Stepcount_python_module.git
@@ -50,166 +91,19 @@ cd Stepcount_python_module
 pip install -e .
 ```
 
----
-
-## PyPI Publishing Guide
-
-To publish this package to PyPI manually or via automated pipelines, follow these steps:
-
-### Prerequisites
-
-Ensure `build` and `twine` are installed:
+Or install requirements directly:
 
 ```bash
-pip install build twine
+pip install -r requirements.txt
 ```
-
-### 1. Build Source and Wheel Distributions
-
-Clean old build artifacts and generate new distribution archives:
-
-```bash
-python -m build
-```
-
-This creates a `.tar.gz` source distribution and a `.whl` wheel file inside the `dist/` directory.
-
-### 2. Check Package Validity
-
-Run Twine's check to ensure metadata and long description render correctly:
-
-```bash
-twine check dist/*
-```
-
-### 3. Upload to TestPyPI (Optional Verification)
-
-Upload the package archives to TestPyPI first:
-
-```bash
-twine upload --repository testpypi dist/*
-```
-
-### 4. Upload to Production PyPI
-
-Upload the package archives to the official PyPI registry:
-
-```bash
-twine upload dist/*
-```
-
-Enter your PyPI API token when prompted.
 
 ---
 
-## API Reference
-
-### `stepdistance.Person`
-
-Represents an individual walker or runner.
-
-```python
-Person(
-    name: str,
-    step_length: Optional[float] = None,
-    stride_length: Optional[float] = None,
-    gender: Optional[str] = None,
-    height: Optional[float] = None,
-    height_unit: str = "cm",
-    pace: str = "walking"
-)
-```
-
-- `step_length`: Step length in meters. If omitted, calculated automatically from stride, height, or gender defaults.
-- `stride_length`: Two-step stride length in meters.
-- `height`: Height value in specified `height_unit`.
-- `height_unit`: `"cm"`, `"m"`, `"in"`, or `"ft"`. Default is `"cm"`.
-- `gender`: `"male"`, `"female"`, or `None`.
-- `pace`: `"walking"`, `"brisk_walking"`, `"jogging"`, `"running"`, or `"hilly"`.
-- `get_effective_step_length(pace: Optional[str] = None) -> float`: Returns the step length scaled by the activity multiplier.
-- `summary() -> str`: Returns a formatted text summary of person attributes.
-
-### `stepdistance.Location`
-
-Represents a named geographic location or landmark.
-
-```python
-Location(name: str)
-```
-
-### `stepdistance.Segment`
-
-Represents a route leg between an origin location and a destination location.
-
-```python
-Segment(
-    origin: Location | str,
-    destination: Location | str,
-    distance: float,
-    unit: str = "km"
-)
-```
-
-- `distance_in_meters() -> float`: Returns distance converted into meters.
-
-### `stepdistance.Route`
-
-Collection of connected route segments.
-
-```python
-Route()
-```
-
-- `add_segment(segment: Segment) -> None`: Appends a `Segment` instance.
-- `add_location(origin: str, destination: str, distance: float, unit: str = "km") -> Segment`: Helper method to create and append a segment.
-- `total_distance_meters() -> float`: Sum of all segment distances in meters.
-- `clear() -> None`: Empties all segments.
-
-### `stepdistance.DistanceCalculator`
-
-Core calculation engine.
-
-```python
-DistanceCalculator(person: Person, route: Optional[Route] = None)
-```
-
-- `calculate_steps(distance: float, unit: str = "km", origin: str = "", destination: str = "", pace: Optional[str] = None, rounding: str = "ceil") -> StepResult`: Calculates steps for a single distance.
-- `calculate_route(rounding: str = "ceil") -> RouteResult`: Calculates step counts across all segments in the attached `Route`.
-
-### `stepdistance.StepResult` & `stepdistance.RouteResult`
-
-Data structures containing calculation outputs including exact step counts (`steps_exact`), rounded step counts (`steps_rounded`), effective step length, and total distance in meters.
-
-### `stepdistance.ReportGenerator`
-
-Generates structured reports for a `RouteResult` or `StepResult`.
-
-```python
-ReportGenerator(result: RouteResult | StepResult)
-```
-
-- `generate_text() -> str`: Generates formatted text report.
-- `generate_json() -> str`: Returns JSON string representation.
-- `save_json(filepath: str) -> None`: Writes JSON report to file.
-- `save_csv(filepath: str) -> None`: Exports segment breakdown to CSV.
-- `save_pdf(filepath: str) -> None`: Generates a PDF summary report.
-
-### `stepdistance.visualization`
-
-Matplotlib plotting utilities:
-
-- `plot_steps_bar(route_result, filename=None, show=False)`: Creates bar chart of steps per segment.
-- `plot_distance_pie(route_result, filename=None, show=False)`: Creates pie chart of distance distribution.
-- `plot_cumulative_line(route_result, filename=None, show=False)`: Creates cumulative step count progress line chart.
-- `plot_all(route_result, save_dir="charts")`: Generates and saves all three charts.
-
----
-
-## Complete Information and Use Cases
+## Python Usage Examples
 
 ### 1. Basic Single Distance Calculation
 
-Calculate the steps required to walk from Delhi to Agra:
+Calculate steps required to walk between two cities with a custom step length:
 
 ```python
 from stepdistance import Person, DistanceCalculator
@@ -217,43 +111,41 @@ from stepdistance import Person, DistanceCalculator
 person = Person(name="Amit", step_length=0.75, pace="brisk_walking")
 calc = DistanceCalculator(person=person)
 
-result = calc.calculate_steps(
-    distance=233,
-    unit="km",
-    origin="Delhi",
-    destination="Agra"
-)
+result = calc.calculate_steps(distance=233, unit="km", origin="Delhi", destination="Agra")
 
-print(f"Route           : {result.origin} -> {result.destination}")
-print(f"Distance        : {result.distance_m:,.0f} m")
-print(f"Step Length     : {result.step_length:.4f} m")
-print(f"Steps Required  : {result.steps_rounded:,}")
+print(f"Origin         : {result.origin}")
+print(f"Destination    : {result.destination}")
+print(f"Distance (m)   : {result.distance_m:,.0f} m")
+print(f"Effective SL   : {result.step_length:.4f} m")
+print(f"Steps Required : {result.steps_rounded:,}")
+# Output: Steps Required: 287,655
 ```
 
-### 2. Height-Based Biomechanical Calculation
+### 2. Height-Based Biomechanical Step Calculation
 
-Calculate step count dynamically estimated from user height and gender:
+Calculate step count dynamically estimated from height and gender:
 
 ```python
 from stepdistance import Person, DistanceCalculator
 
-# Biomechanical calculation: Height 175 cm, Male -> Step length = 1.75 * 0.415 = ~0.7263 m
+# Height: 175 cm, Gender: Male -> Step length calculated automatically (~0.7263 m)
 person = Person(name="Rahul", height=175, height_unit="cm", gender="male", pace="walking")
 calc = DistanceCalculator(person=person)
 
 result = calc.calculate_steps(distance=5, unit="km", origin="Home", destination="Park")
+
 print(f"Calculated Step Length : {person.step_length:.4f} m")
 print(f"Total Steps            : {result.steps_rounded:,}")
 ```
 
-### 3. Multi-City Itinerary and Report Generation
+### 3. Multi-City Route Chain
 
-Calculate multi-leg trips and export reports:
+Build a multi-segment route and calculate total step metrics:
 
 ```python
 from stepdistance import Person, Route, DistanceCalculator, ReportGenerator
 
-person = Person(name="Amit", height=178, height_unit="cm", gender="male", pace="walking")
+person = Person(name="Amit", step_length=0.75)
 
 route = Route()
 route.add_location("Delhi", "Agra", 233, unit="km")
@@ -263,31 +155,33 @@ route.add_location("Jaipur", "Udaipur", 394, unit="km")
 calc = DistanceCalculator(person=person, route=route)
 route_result = calc.calculate_route()
 
-# Console Report
 report_gen = ReportGenerator(route_result)
 print(report_gen.generate_text())
-
-# Export Files
-report_gen.save_json("route_report.json")
-report_gen.save_csv("route_report.csv")
-report_gen.save_pdf("route_report.pdf")
 ```
 
-### 4. Graph Visualizations
+### 4. Comprehensive Reports and Chart Visualizations
 
-Generate graphical charts for route step distribution:
+Export calculated route results into JSON, CSV, PDF, and Matplotlib graphs:
 
 ```python
-from stepdistance import plot_all
+from stepdistance import plot_all, ReportGenerator
 
-chart_files = plot_all(route_result, save_dir="./output_charts")
-for file in chart_files:
-    print(f"Generated chart: {file}")
+report_gen = ReportGenerator(route_result)
+
+# Export structured report files
+report_gen.save_json("report.json")
+report_gen.save_csv("report.csv")
+report_gen.save_pdf("report.pdf")
+
+# Plot Matplotlib graphs (Bar, Pie, Line)
+chart_files = plot_all(route_result, save_dir="./charts")
+for chart in chart_files:
+    print(f"Generated chart: {chart}")
 ```
 
-### 5. Exception Handling
+### 5. Custom Exceptions and Error Handling
 
-Handle invalid inputs cleanly using custom package exceptions:
+Handle invalid distances, units, or step lengths cleanly:
 
 ```python
 from stepdistance import Person, DistanceCalculator, StepDistanceError, InvalidDistanceError
@@ -298,34 +192,48 @@ calc = DistanceCalculator(person=person)
 try:
     calc.calculate_steps(distance=-50, unit="km")
 except InvalidDistanceError as e:
-    print(f"Distance validation failed: {e}")
+    print(f"Distance validation error: {e}")
 except StepDistanceError as e:
-    print(f"StepDistance processing error: {e}")
+    print(f"General step distance error: {e}")
 ```
 
 ---
 
-## CLI and Interactive Console
+## Command Line & Interactive Mode
 
 ### Interactive Menu Mode
 
-Launch the interactive console menu:
+Launch the interactive console application:
 
 ```bash
 stepdistance interactive
 ```
 
-Interactive choices include single distance calculation, multi-segment route builder, report exporter (JSON, CSV, PDF), graph generator, and profile configuration.
+```text
+============================================================
+      Welcome to StepDistanceCalculator Interactive Mode
+============================================================
+
+1. Calculate Single Distance
+2. Add Segment to Current Route
+3. View Current Route & Calculate Steps
+4. Clear Current Route
+5. Change Person Info
+6. View Calculation History
+7. Export Reports (JSON / CSV / PDF)
+8. Generate Graph Visualizations
+9. Exit
+```
 
 ### CLI Subcommands
 
 Calculate a single distance:
 
 ```bash
-stepdistance calculate --from Delhi --to Agra --distance 233 --unit km --height 175 --gender male --pace brisk_walking
+stepdistance calculate --from Delhi --to Agra --distance 233 --unit km --step-length 0.75
 ```
 
-Calculate steps from a route JSON specification:
+Calculate steps from a route JSON specification file:
 
 ```bash
 stepdistance route --file route.json --output-dir ./output
@@ -333,9 +241,45 @@ stepdistance route --file route.json --output-dir ./output
 
 ---
 
-## Running Tests
+## PyPI Publishing Guide
 
-Run unit tests using pytest:
+To build and publish this package to PyPI, use `build` and `twine`:
+
+### 1. Install Publishing Tools
+
+```bash
+pip install build twine
+```
+
+### 2. Build Package Distributions
+
+Generate source tarball and wheel distributions:
+
+```bash
+python -m build
+```
+
+This populates the `dist/` directory with `.tar.gz` and `.whl` files.
+
+### 3. Verify Package Metadata
+
+```bash
+twine check dist/*
+```
+
+### 4. Upload to PyPI
+
+Upload the package to PyPI:
+
+```bash
+twine upload dist/*
+```
+
+---
+
+## Running Unit Tests
+
+Run the full pytest suite:
 
 ```bash
 pytest tests/ -v
@@ -345,4 +289,4 @@ pytest tests/ -v
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
