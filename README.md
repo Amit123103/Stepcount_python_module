@@ -31,48 +31,6 @@ StepDistanceCalculator provides a high-level Python API and Command-Line Interfa
 
 ---
 
-## Project Structure
-
-```text
-StepDistanceCalculator/
-│
-├── stepdistance/            # Core package
-│   ├── __init__.py          # Package exports & versioning
-│   ├── person.py            # Person class (name, gender, step length, pace)
-│   ├── location.py          # Location data class
-│   ├── route.py             # Route and Segment classes
-│   ├── calculator.py        # DistanceCalculator & result dataclasses
-│   ├── converter.py         # Unit conversion module
-│   ├── reports.py           # ReportGenerator (Text, JSON, CSV, PDF)
-│   ├── visualization.py     # Matplotlib charts (Bar, Pie, Line)
-│   ├── utils.py             # Validators, logging & custom exceptions
-│   └── cli.py               # CLI & Interactive Menu Program
-│
-├── examples/                # Example scripts
-│   ├── basic_usage.py       # Single distance calculation
-│   ├── multi_city.py        # Multi-city route calculation
-│   └── generate_reports.py  # Exporting JSON/CSV/PDF & Charts
-│
-├── tests/                   # Pytest test suite
-│   ├── test_calculator.py
-│   ├── test_cli.py
-│   ├── test_converter.py
-│   ├── test_location.py
-│   ├── test_person.py
-│   ├── test_reports.py
-│   ├── test_route.py
-│   └── test_utils.py
-│
-├── docs/
-│   └── usage_guide.md
-├── pyproject.toml           # Build configuration
-├── setup.py                 # Setup script
-├── requirements.txt         # Package dependencies
-└── README.md
-```
-
----
-
 ## Quick Start & Installation
 
 ### Option 1: Install from PyPI (Recommended)
