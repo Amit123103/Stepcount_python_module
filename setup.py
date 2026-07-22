@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="StepDistanceCalculator",
-    version="1.0.0",
+    version="1.0.1",
     description="Calculate walking step counts between places or cities based on total distance and step length.",
     long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",

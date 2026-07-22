@@ -35,7 +35,7 @@ from stepdistance.visualization import (
     plot_steps_bar,
 )
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "StepDistanceCalculator Team"
 
 __all__ = [
