@@ -90,8 +90,30 @@ def _prompt_person() -> Person:
         return Person(name=name, pace=pace)
 
 
+def _prompt_add_segment(route: Route) -> bool:
+    """Prompt user to add a segment to route. Return True if added."""
+    print("\n--- Add Route Segment ---")
+    origin = input("Origin City/Place [e.g. Home]: ").strip() or "Home"
+    dest = input("Destination City/Place [e.g. Park]: ").strip() or "Park"
+    dist_str = input("Distance [e.g. 5]: ").strip()
+    unit = input("Unit (m, km, miles, feet) [Default: km]: ").strip() or "km"
+
+    try:
+        dist = float(dist_str)
+        route.add_segment(origin, dest, dist, unit=unit)
+        print(f"✓ Segment '{origin} → {dest}' ({dist} {unit}) added to route.")
+        return True
+    except Exception as e:
+        print(f"❌ Error adding segment: {e}")
+        return False
+
+
 def interactive_menu() -> None:
     """Run an interactive menu-driven program for StepDistanceCalculator."""
+    # Suppress verbose logger outputs during interactive session
+    import logging
+    logging.getLogger("stepdistance").setLevel(logging.WARNING)
+
     print("=" * 60)
     print("      Welcome to StepDistanceCalculator Interactive Mode")
     print("=" * 60)
@@ -129,44 +151,40 @@ def interactive_menu() -> None:
             try:
                 dist = float(dist_str)
                 res = calc.calculate_steps(dist, unit=unit, origin=origin, destination=dest)
+                route.add_segment(origin, dest, dist, unit=unit)
+
                 print("\n" + "-" * 40)
-                print(f"{res.origin} → {res.destination}")
+                print(f"📍 {res.origin} → {res.destination}")
                 print(f"Distance       : {dist} {unit} ({res.distance_m:,.2f} m)")
                 print(f"Effective SL   : {res.step_length:.4f} m (Pace: {res.pace})")
                 print(f"Steps Required : {res.steps_rounded:,} (Exact: {res.steps_exact:,.2f})")
                 print("-" * 40)
+                print(f"✓ Added '{res.origin} → {res.destination}' to current route.")
             except Exception as e:
-                print(f"Error calculating steps: {e}")
+                print(f"❌ Error calculating steps: {e}")
 
         elif choice == "2":
-            print("\n--- Add Route Segment ---")
-            origin = input("Origin City/Place: ").strip()
-            dest = input("Destination City/Place: ").strip()
-            dist_str = input("Distance: ").strip()
-            unit = input("Unit (m, km, miles, feet) [Default: km]: ").strip() or "km"
-
-            try:
-                dist = float(dist_str)
-                route.add_segment(origin, dest, dist, unit=unit)
-                print(f"Segment '{origin} → {dest}' ({dist} {unit}) added.")
-            except Exception as e:
-                print(f"Error adding segment: {e}")
+            _prompt_add_segment(route)
 
         elif choice == "3":
             if route.segment_count == 0:
-                print("\nCurrent route is empty! Add segments first.")
-            else:
+                print("\nCurrent route is empty!")
+                add_now = input("Would you like to add a segment now? (y/n) [Default: y]: ").strip().lower() or "y"
+                if add_now in ("y", "yes"):
+                    _prompt_add_segment(route)
+
+            if route.segment_count > 0:
                 try:
                     res = calc.calculate_route(route)
                     report = ReportGenerator(res)
                     print("\n" + report.generate_text())
                 except Exception as e:
-                    print(f"Error calculating route: {e}")
+                    print(f"❌ Error calculating route: {e}")
 
         elif choice == "4":
             route = Route()
             calc.route = route
-            print("\nCurrent route cleared.")
+            print("\n✓ Current route cleared.")
 
         elif choice == "5":
             person = _prompt_person()
@@ -188,8 +206,12 @@ def interactive_menu() -> None:
 
         elif choice == "7":
             if route.segment_count == 0:
-                print("\nCurrent route is empty! Build a route first before exporting.")
-            else:
+                print("\nCurrent route is empty!")
+                add_now = input("Would you like to add a segment now before exporting? (y/n) [Default: y]: ").strip().lower() or "y"
+                if add_now in ("y", "yes"):
+                    _prompt_add_segment(route)
+
+            if route.segment_count > 0:
                 try:
                     res = calc.calculate_route(route)
                     rg = ReportGenerator(res)
@@ -199,30 +221,34 @@ def interactive_menu() -> None:
 
                     if fmt in ("json", "all"):
                         p = rg.save_json(f"{out_dir}/report.json")
-                        print(f"Saved JSON: {p}")
+                        print(f"✓ Saved JSON: {p}")
                     if fmt in ("csv", "all"):
                         p = rg.save_csv(f"{out_dir}/report.csv")
-                        print(f"Saved CSV: {p}")
+                        print(f"✓ Saved CSV: {p}")
                     if fmt in ("pdf", "all"):
                         p = rg.save_pdf(f"{out_dir}/report.pdf")
-                        print(f"Saved PDF: {p}")
+                        print(f"✓ Saved PDF: {p}")
 
                 except Exception as e:
-                    print(f"Error exporting reports: {e}")
+                    print(f"❌ Error exporting reports: {e}")
 
         elif choice == "8":
             if route.segment_count == 0:
-                print("\nCurrent route is empty! Build a route first before generating charts.")
-            else:
+                print("\nCurrent route is empty!")
+                add_now = input("Would you like to add a segment now before generating charts? (y/n) [Default: y]: ").strip().lower() or "y"
+                if add_now in ("y", "yes"):
+                    _prompt_add_segment(route)
+
+            if route.segment_count > 0:
                 try:
                     res = calc.calculate_route(route)
                     out_dir = input("Enter output directory for charts [Default: ./charts]: ").strip() or "./charts"
                     paths = plot_all(res, save_dir=out_dir)
-                    print("\nCharts generated successfully:")
+                    print("\n✓ Charts generated successfully:")
                     for path in paths:
                         print(f" - {path}")
                 except Exception as e:
-                    print(f"Error generating charts: {e}")
+                    print(f"❌ Error generating charts: {e}")
 
         elif choice == "9":
             print("\nThank you for using StepDistanceCalculator!")

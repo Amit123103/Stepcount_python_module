@@ -168,6 +168,9 @@ class Person:
     def __str__(self) -> str:
         """Human-readable single-line summary."""
         assert self.step_length is not None
+        eff = self.get_effective_step_length()
+        if self.pace != "walking":
+            return f"{self.name} (base step length: {self.step_length:.2f} m, effective: {eff:.2f} m, pace: {self.pace})"
         return f"{self.name} (step length: {self.step_length:.2f} m, pace: {self.pace})"
 
     def summary(self) -> str:

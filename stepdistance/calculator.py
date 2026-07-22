@@ -189,7 +189,9 @@ class DistanceCalculator:
             steps_rounded = int(round(steps_exact))
         elif mode == "floor":
             steps_rounded = int(floor(steps_exact))
-        else:  # default "ceil" or "exact"
+        elif mode == "exact":
+            steps_rounded = int(round(steps_exact))
+        else:  # default "ceil"
             steps_rounded = ceil(steps_exact)
 
         result = StepResult(
